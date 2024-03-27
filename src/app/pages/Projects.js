@@ -20,7 +20,7 @@ const Projects = () => {
       try {
         const response = await fetch('https://api.github.com/search/repositories?q=user:wauul', {
           headers: {
-            'Authorization': 'Bearer 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',
+            'Authorization': 'Bearer ' + token,
           }
         });
         if (!response.ok) {

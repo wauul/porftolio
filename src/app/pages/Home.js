@@ -21,7 +21,7 @@ const Home = () => {
         setVisitorInfo(prev => ({ ...prev, location }));
         const token = process.env.REACT_APP_WEATHER_TOKEN;
 
-        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${res.data.city}&appid=9fed15484dbb16c26dbe95d24a8b308f&units=metric`).then(weatherRes => {
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${res.data.city}&appid=${token}&units=metric`).then(weatherRes => {
           const weather = weatherRes.data.weather[0].description;
           const temperature = `${weatherRes.data.main.temp}°C`;
           setVisitorInfo(prev => ({ ...prev, weather, temperature }));

@@ -132,7 +132,7 @@ const AboutMe = () => {
           className="text-2xl font-bold"/>
 
                 <p className="mt-2 text-lg text-gray-700">
-  Welcome! I'm excited to have you here exploring my portfolio. It's a collection of my work and experiences in the tech world, from the first line of code I wrote to the latest project I've completed. Dive in to see the technologies I've worked with and the projects I'm proud of.
+  Welcome! I&apos;m excited to have you here exploring my portfolio. It&apos;s a collection of my work and experiences in the tech world, from the first line of code I wrote to the latest project I&apos;ve completed. Dive in to see the technologies I&apos;ve worked with and the projects I&apos;m proud of.
 </p>
 
       </div>

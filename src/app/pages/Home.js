@@ -66,7 +66,7 @@ const Home = () => {
     <InfoCard title="Weather" value={`${visitorInfo.weather}, ${visitorInfo.temperature}`} />
   </div>
 
-  <p className="mb-8">Hello, I'm Wael Fezari, a passionate Fullstack/AI Developer 💻 based in Marseille☀️. {greeting()}, explore my portfolio to learn more about my journey, skills, and the projects I&apos;ve been a part of.</p>
+  <p className="mb-8">Hello, I&apos;m Wael Fezari, a passionate Fullstack/AI Developer 💻 based in Marseille☀️. {greeting()}, explore my portfolio to learn more about my journey, skills, and the projects I&apos;ve been a part of.</p>
   
 </motion.div>
 

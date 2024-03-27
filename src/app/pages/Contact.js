@@ -30,7 +30,7 @@ const Contact = () => {
         <a href="https://github.com/wauul" target="_blank" rel="noopener noreferrer" title="GitHub" className="text-2xl">
           <FaGithub />
         </a>
-        <a href="https://api.whatsapp.com/send?phone=+33698367426" target="_blank" rel="noopener noreferrer" title="WhatsApp" className="text-2xl">
+        <a href="https://api.whatsapp.com/send?phone=33698367426" target="_blank" rel="noopener noreferrer" title="WhatsApp" className="text-2xl">
           <FaWhatsapp />
         </a>
       </div>

@@ -153,7 +153,7 @@ const Projects = () => {
 
 const ProjectCard = ({ project, onClick }) => (
   <motion.div
-    className="p-4 bg-gray-200 rounded-lg shadow-lg overflow-hidden cursor-pointer"
+    className="p-4 rounded-lg shadow-lg overflow-hidden cursor-pointer"
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: 0.1 }}

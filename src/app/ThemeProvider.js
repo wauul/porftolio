@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
@@ -6,12 +6,20 @@ const ThemeContext = createContext();
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-  // Assuming you're storing the user's theme preference in localStorage
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState('light'); // Set initial state to 'light'
 
   useEffect(() => {
+    // Access localStorage only after component mounts
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) {
+      setTheme(storedTheme); // Update state with stored theme, if any
+    }
+  }, []);
+
+  useEffect(() => {
+    // Update localStorage and document attribute when theme changes
     localStorage.setItem('theme', theme);
-    document.documentElement.setAttribute('data-theme', theme); // This sets an attribute on the <html> element to easily manage theme-related styles.
+    document.documentElement.setAttribute('data-theme', theme); 
   }, [theme]);
 
   const toggleTheme = () => {

@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-scroll';
 import { FaSun, FaMoon, FaBars } from 'react-icons/fa';
+import { useTheme } from '../ThemeProvider';
 
 const Navbar = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { theme, toggleTheme } = useTheme(); // Use theme and toggleTheme from context
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const isDarkMode = theme === 'dark'; // Determine if it's dark mode based on the theme context
 
   useEffect(() => {
     const root = document.documentElement;
@@ -20,7 +23,6 @@ const Navbar = () => {
     }
   }, [isDarkMode]);
 
-  const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
@@ -37,9 +39,9 @@ const Navbar = () => {
           <Link to="projects" smooth={true} duration={500} className="px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white dark:hover:bg-blue-600 transition duration-300 rounded-md" onClick={() => setIsMenuOpen(false)}>Projects</Link>
           <Link to="contact" smooth={true} duration={500} className="px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white dark:hover:bg-blue-600 transition duration-300 rounded-md" onClick={() => setIsMenuOpen(false)}>Contact</Link>
         </div>
-        
+
         <button
-          onClick={toggleDarkMode}
+          onClick={toggleTheme} // Use toggleTheme from context
           className="transform transition ease-in-out duration-300 w-12 h-12 bg-gradient-to-r from-yellow-400 to-yellow-500 dark:from-gray-700 dark:to-gray-800 rounded-full shadow-lg flex items-center justify-center"
         >
           {isDarkMode ? <FaMoon className="text-gray-200 text-2xl" /> : <FaSun className="text-yellow-400 text-2xl" />}

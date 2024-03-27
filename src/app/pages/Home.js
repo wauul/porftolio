@@ -19,7 +19,7 @@ const Home = () => {
       axios.get(`https://ipapi.co/${ip}/json/`).then(res => {
         const location = `${res.data.city}, ${res.data.country_name}`;
         setVisitorInfo(prev => ({ ...prev, location }));
-        const token = process.env.REACT_APP_WEATHER_TOKEN;
+        const token = process.env.NEXT_PUBLIC_VERCEL_ENV_WEATHER_TOKEN;
 
         axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${res.data.city}&appid=${token}&units=metric`).then(weatherRes => {
           const weather = weatherRes.data.weather[0].description;
@@ -44,31 +44,21 @@ const Home = () => {
   };
 
   return (
-<motion.div
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.5 }}
-  className="container mx-auto text-center p-8"
->
-  <motion.h1
-    initial={{ scale: 0.9, opacity: 0 }}
-    animate={{ scale: 1, opacity: 1 }}
-    transition={{ delay: 0.7 }}
-    className="text-4xl font-bold mb-4"
-  >
-    Welcome to My Portfolio
-  </motion.h1>
-  
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <InfoCard title="IP Address" value={visitorInfo.ip} />
-    <InfoCard title="Location" value={visitorInfo.location} />
-    <InfoCard title="Local Time" value={visitorInfo.time} />
-    <InfoCard title="Weather" value={`${visitorInfo.weather}, ${visitorInfo.temperature}`} />
-  </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5 }}
+      className="container mx-auto text-center p-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <InfoCard title="IP Address" value={visitorInfo.ip} />
+        <InfoCard title="Location" value={visitorInfo.location} />
+        <InfoCard title="Local Time" value={visitorInfo.time} />
+        <InfoCard title="Weather" value={`${visitorInfo.weather}, ${visitorInfo.temperature}`} />
+      </div>
 
-  <p className="mb-8">Hello, I&apos;m Wael Fezari, a passionate Fullstack/AI Developer 💻 based in Marseille☀️. {greeting()}, explore my portfolio to learn more about my journey, skills, and the projects I&apos;ve been a part of.</p>
-  
-</motion.div>
+      <p className="mb-8">Hello! I&apos;m Wael, your go-to Fullstack/AI Developer, dialing in from the sun-kissed cities of Marseille and Annaba ☀️. {greeting()}, and step into my digital realm to discover the milestones of my tech odyssey, the toolkit I swear by, and the innovative projects that have my signature all over them. Let&apos;s embark on this journey together!</p>
+
+    </motion.div>
 
 
   );

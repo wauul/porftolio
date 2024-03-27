@@ -15,7 +15,7 @@ const Projects = () => {
 
   // Fetch projects from GitHub
   useEffect(() => {
-    const token = process.env.REACT_APP_GITHUB_TOKEN;
+    const token = process.env.NEXT_PUBLIC_VERCEL_ENV_GITHUB_TOKEN;
     const fetchProjects = async () => {
       try {
         const response = await fetch('https://api.github.com/search/repositories?q=user:wauul', {
@@ -80,7 +80,7 @@ const Projects = () => {
       ? projectTypeFilter.filter((t) => t !== type)
       : [...projectTypeFilter, type];
     setProjectTypeFilter(newFilter);
-    
+
   };
 
   const handleTechnologyFilterChange = (tech) => {
@@ -92,39 +92,39 @@ const Projects = () => {
 
   return (
     <>
-<div className="flex flex-wrap justify-center gap-2 mb-4">
-  {projectTypeFilter.map((type) => (
-    <FilterTag
-      key={type}
-      label={type}
-      onRemove={() => handleTypeFilterChange(type)}
-    />
-  ))}
+      <div className="flex flex-wrap justify-center gap-2 mb-4">
+        {projectTypeFilter.map((type) => (
+          <FilterTag
+            key={type}
+            label={type}
+            onRemove={() => handleTypeFilterChange(type)}
+          />
+        ))}
 
-  {technologyFilter.map((tech) => (
-    <FilterTag
-      key={tech}
-      label={tech}
-      onRemove={() => handleTechnologyFilterChange(tech)}
-    />
-  ))}
-</div>
+        {technologyFilter.map((tech) => (
+          <FilterTag
+            key={tech}
+            label={tech}
+            onRemove={() => handleTechnologyFilterChange(tech)}
+          />
+        ))}
+      </div>
 
       {/* Filter Dropdowns */}
       <div className="flex justify-center gap-4 mb-6">
-  <Dropdown
-    title="Project Type"
-    options={['Front End', 'Back End', 'Mobile', 'Desktop', 'Fullstack', 'AI']}
-    selectedOptions={projectTypeFilter}
-    onChange={handleTypeFilterChange}
-  />
-  <Dropdown
-    title="Technology"
-    options={['React', 'Kotlin', 'Vue', 'Symfony', 'Python', 'Java', 'React Native', 'Flutter', 'Flask', 'NodeJS', 'TensorFlow', 'Keras', 'Scikit Learn']}
-    selectedOptions={technologyFilter}
-    onChange={handleTechnologyFilterChange}
-  />
-</div>
+        <Dropdown
+          title="Project Type"
+          options={['Front End', 'Back End', 'Mobile', 'Desktop', 'Fullstack', 'AI']}
+          selectedOptions={projectTypeFilter}
+          onChange={handleTypeFilterChange}
+        />
+        <Dropdown
+          title="Technology"
+          options={['React', 'Kotlin', 'Vue', 'Symfony', 'Python', 'Java', 'React Native', 'Flutter', 'Flask', 'NodeJS', 'TensorFlow', 'Keras', 'Scikit Learn']}
+          selectedOptions={technologyFilter}
+          onChange={handleTechnologyFilterChange}
+        />
+      </div>
 
       {/* Projects Display */}
       {isMobile ? (

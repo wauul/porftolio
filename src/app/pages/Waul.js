@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
+import Slider from 'react-slick'; // Import Slider
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 import Image from 'next/image';
 import { ReactTyped } from "react-typed";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FaGraduationCap, FaLaptopCode, FaBriefcase, FaUniversity, FaCamera, FaGamepad, FaPlane, FaBook, FaFilm, FaDatabase, FaBrain } from 'react-icons/fa';
-import { DiDocker, DiGit, DiMarkdown, DiJava  } from 'react-icons/di';
-import { SiPython, SiGitlab ,SiSwagger , SiXstate ,SiBuefy ,SiDart, SiIntegromat  ,SiTailwindcss , SiAirtable ,SiNextdotjs , SiElixir, SiFlask , SiKotlin, SiFlutter, SiSymfony, SiSpring, SiTensorflow, SiScikitlearn, SiPytorch, SiPandas, SiSoundcharts , SiPysyft, SiLatex, SiJavascript, SiPhp, SiAngular, SiReact, SiNodedotjs , SiMysql, SiPostgresql, SiMongodb, SiFirebase, SiMicrosoftazure } from 'react-icons/si';
+import { DiDocker, DiGit, DiMarkdown, DiJava } from 'react-icons/di';
+import { SiPython, SiGitlab, SiSwagger, SiXstate, SiBuefy, SiDart, SiIntegromat, SiTailwindcss, SiAirtable, SiNextdotjs, SiElixir, SiFlask, SiKotlin, SiFlutter, SiSymfony, SiSpring, SiTensorflow, SiScikitlearn, SiPytorch, SiPandas, SiSoundcharts, SiPysyft, SiLatex, SiJavascript, SiPhp, SiAngular, SiReact, SiNodedotjs, SiMysql, SiPostgresql, SiMongodb, SiFirebase, SiMicrosoftazure } from 'react-icons/si';
 
 const AboutMe = () => {
   const timelineEvents = [
@@ -24,16 +29,16 @@ const AboutMe = () => {
         { name: 'PHP', icon: <SiPhp /> },
         { name: 'Elixir', icon: <SiElixir /> },
         { name: 'Kotlin', icon: <SiKotlin /> },
-        { name: 'Dart', icon: <SiDart  /> }, 
+        { name: 'Dart', icon: <SiDart /> },
       ],
     },
     {
       category: 'Front-end Frameworks',
       skills: [
         { name: 'ReactJS', icon: <SiReact /> },
-        { name: 'NextJS', icon: <SiNextdotjs  /> },
+        { name: 'NextJS', icon: <SiNextdotjs /> },
         { name: 'AngularJS', icon: <SiAngular /> },
-        { name: 'KotlinCompose', icon: <SiKotlin /> }, 
+        { name: 'Compose', icon: <SiKotlin /> },
         { name: 'Flutter', icon: <SiFlutter /> },
         { name: 'React Native', icon: <SiReact /> },
         { name: 'Tailwind', icon: <SiTailwindcss /> },
@@ -42,8 +47,8 @@ const AboutMe = () => {
     {
       category: 'Back-end Frameworks',
       skills: [
-        { name: 'NodeJS', icon: <SiNodedotjs  /> },
-        { name: 'Flask', icon: <SiFlask  /> }, 
+        { name: 'NodeJS', icon: <SiNodedotjs /> },
+        { name: 'Flask', icon: <SiFlask /> },
         { name: 'Symfony', icon: <SiSymfony /> },
         { name: 'Spring', icon: <SiSpring /> },
       ],
@@ -54,9 +59,9 @@ const AboutMe = () => {
         { name: 'Tensorflow', icon: <SiTensorflow /> },
         { name: 'Scikit-learn', icon: <SiScikitlearn /> },
         { name: 'Pytorch', icon: <SiPytorch /> },
-        { name: 'Keras', icon: <SiTensorflow /> }, 
+        { name: 'Keras', icon: <SiTensorflow /> },
         { name: 'Pandas', icon: <SiPandas /> },
-        { name: 'Numpy', icon: <FaBrain /> }, 
+        { name: 'Numpy', icon: <FaBrain /> },
         { name: 'Matplotlib', icon: <SiSoundcharts /> },
         { name: 'NLTK', icon: <SiPysyft /> },
       ],
@@ -66,7 +71,7 @@ const AboutMe = () => {
       skills: [
         { name: 'MySQL', icon: <SiMysql /> },
         { name: 'PostgreSQL', icon: <SiPostgresql /> },
-        { name: 'SQLite', icon: <FaDatabase /> }, 
+        { name: 'SQLite', icon: <FaDatabase /> },
         { name: 'MongoDB', icon: <SiMongodb /> },
         { name: 'Firebase', icon: <SiFirebase /> },
       ],
@@ -74,10 +79,10 @@ const AboutMe = () => {
     {
       category: 'NO-Code',
       skills: [
-        { name: 'Bubble.io', icon: <SiBuefy  /> },
-        { name: 'Airtable', icon: <SiAirtable  /> },
-        { name: 'Xano', icon: <SiXstate  /> },
-        { name: 'Make', icon: <SiIntegromat  /> },
+        { name: 'Bubble.io', icon: <SiBuefy /> },
+        { name: 'Airtable', icon: <SiAirtable /> },
+        { name: 'Xano', icon: <SiXstate /> },
+        { name: 'Make', icon: <SiIntegromat /> },
       ],
     },
     {
@@ -91,7 +96,7 @@ const AboutMe = () => {
       category: 'Versioning',
       skills: [
         { name: 'Git', icon: <DiGit /> },
-        { name: 'Gitlab', icon: <SiGitlab  /> }, 
+        { name: 'Gitlab', icon: <SiGitlab /> },
       ],
     },
     {
@@ -99,7 +104,7 @@ const AboutMe = () => {
       skills: [
         { name: 'Markdown', icon: <DiMarkdown /> },
         { name: 'LaTeX', icon: <SiLatex /> },
-        { name: 'Swagger', icon: <SiSwagger  /> },
+        { name: 'Swagger', icon: <SiSwagger /> },
       ],
     },
   ];
@@ -111,6 +116,31 @@ const AboutMe = () => {
     { hobby: 'Reading', icon: <FaBook /> },
     { hobby: 'Movies', icon: <FaFilm /> },
   ];
+
+  const sliderSettings = {
+    dots: true, // Show dot indicators at the bottom
+    infinite: false, // Don't loop back to the beginning/end
+    speed: 500,
+    slidesToShow: 1, // Show one slide at a time
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024, // For devices less than 1024px wide
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 600, // For devices less than 600px wide
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: true, // Enable dot indicators for smaller devices
+        },
+      },
+    ],
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -125,39 +155,40 @@ const AboutMe = () => {
           />
         </div>
         <ReactTyped
-          strings={['Hello!', 'Wael Fezari.', '27 Years Old.', 'Fullstack Developer.', 'AI Enthusiast.','Tech Geek.', 'Mythology Lover.']}
+          strings={['Hello!', 'Wael Fezari.', '27 Years Old.', 'Fullstack Developer.', 'AI Enthusiast.', 'Tech Geek.', 'Mythology Lover.']}
           typeSpeed={40}
           backSpeed={50}
           loop
-          className="text-2xl font-bold"/>
+          className="text-2xl font-bold" />
 
-                <p className="mt-2 text-lg text-gray-700">
-  Welcome! I&apos;m excited to have you here exploring my portfolio. It&apos;s a collection of my work and experiences in the tech world, from the first line of code I wrote to the latest project I&apos;ve completed. Dive in to see the technologies I&apos;ve worked with and the projects I&apos;m proud of.
-</p>
+        <p className="mt-2 text-lg ">
+          Welcome! I&apos;m excited to have you here exploring my portfolio. It&apos;s a collection of my work and experiences in the tech world, from the first line of code I wrote to the latest project I&apos;ve completed. Dive in to see the technologies I&apos;ve worked with and the projects I&apos;m proud of.
+        </p>
 
       </div>
 
 
       <div className="mb-8 w-full">
-  <h3 className="text-2xl font-bold mb-4">My Journey</h3>
-  <div className="flex items-center justify-between">
-    {timelineEvents.map((event, index) => (
-      <div key={index} className="border rounded-lg p-4 flex flex-col items-center" style={{ flexGrow: 1, margin: '0 10px', maxWidth: `calc(100% / ${timelineEvents.length} - 20px)` }}>
-      
+        <h3 className="text-2xl font-bold mb-4">My Journey</h3>
+        <Slider {...sliderSettings}> {/* Use the Slider component */}
+          {timelineEvents.map((event, index) => (
+            <div key={index} className="p-4">
+              <div className="border rounded-lg p-4 flex flex-col items-center justify-center h-full" style={{ margin: '0 10px' }}>
                 <div className="flex-shrink-0">
                   {event.icon}
                 </div>
                 <div className="text-center mt-2">
                   <div className="text-xl font-semibold">{event.title}</div>
                   <div>{event.year}</div>
-                  <p className="text-gray-600">{event.description}</p>
+                  <p>{event.description}</p>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          ))}
+        </Slider>
+      </div>
 
-        <div className="mb-8">
+      <div className="mb-8">
         <h3 className="text-2xl font-bold mb-4">Skills</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {skillsCategories.map((category, catIndex) => (
@@ -179,8 +210,12 @@ const AboutMe = () => {
       </div>
 
       <div className="text-center mt-8">
-        <a href="/path-to-your-resume.pdf" target="_blank" rel="noopener noreferrer" className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Download My Resume</a>
+        <a href="/CV-Wael Fezari.pdf" target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105">
+          <FontAwesomeIcon icon={faDownload} className="mr-2" />
+          Download My Resume
+        </a>
       </div>
+
     </div>
   );
 };

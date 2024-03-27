@@ -1,7 +1,7 @@
-// pages/index.js
 "use client";
 import React from 'react';
 import { ParallaxProvider } from 'react-scroll-parallax';
+import { ThemeProvider, useTheme } from './ThemeProvider'; // Import ThemeProvider and useTheme
 import Navbar from './components/Navbar';
 import ParallaxSection from './components/ParallaxSection';
 import Home from './pages/Home';
@@ -17,75 +17,49 @@ const sectionVariants = {
   visible: { opacity: 1, y: 0 }
 };
 
-export default function Index() {
+const SectionWithParallax = ({ id, title, component: Component }) => {
+  const { theme } = useTheme();
+  const imageIndex = id === 'home' ? '01' : id === 'about' ? '02' : id === 'projects' ? '03' : '04';
+  const imageSrc = `/Images/${theme.toUpperCase()}${imageIndex}.jpg`;
+
+  const titleClass = `text-4xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-black'}`;
+
 
   return (
-    <ParallaxProvider>
-      <Navbar />
+    <section id={id}>
+      <ParallaxSection imageSrc={imageSrc} speed={-10}>
+        <motion.h1
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.7 }}
+          className={titleClass}>
+          {title}
+        </motion.h1>
+      </ParallaxSection>
+      <motion.div
+        className="p-10"
+        initial="hidden"
+        whileInView="visible"
+        variants={sectionVariants}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="z-10 p-5 text-center"><Component /></div>
+      </motion.div>
+    </section>
+  );
+};
 
-      {/* Welcome Section */}
-      <section id="home">
-        <ParallaxSection imageSrc="/Images/PARALLAX_BACKGROUND.webp">
-          <h1 className="text-4xl font-bold text-center">Welcome to My Portfolio</h1>
-        </ParallaxSection>
-        <motion.div
-          className="p-10 z-10 relative" // Ensure this div appears above the parallax background
-          initial="hidden"
-          whileInView="visible"
-          variants={sectionVariants}
-          transition={{ duration: 0.5 }}
-        >
-          <Home />
-        </motion.div>
-      </section>
-
-      {/* About Me Section */}
-      <section id="about">
-        <ParallaxSection imageSrc="/Images/aboutme.webp">
-          <h1 className="text-4xl font-bold text-center">About Me</h1>
-        </ParallaxSection>
-        <motion.div
-          className="p-10 z-10 relative"
-          initial="hidden"
-          whileInView="visible"
-          variants={sectionVariants}
-          transition={{ duration: 0.5 }}
-        >
-          <AboutMe />
-        </motion.div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects">
-        <ParallaxSection imageSrc="/Images/projects.webp">
-          <h1 className="text-4xl font-bold text-center">Projects</h1>
-        </ParallaxSection>
-        <motion.div
-          className="p-10 z-10 relative"
-          initial="hidden"
-          whileInView="visible"
-          variants={sectionVariants}
-          transition={{ duration: 0.5 }}
-        >
-          <Projects />
-        </motion.div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact">
-        <ParallaxSection imageSrc="/Images/contact.webp">
-          <h1 className="text-4xl font-bold text-center">Contact Me</h1>
-        </ParallaxSection>
-        <motion.div
-          className="p-10 z-10 relative"
-          initial="hidden"
-          whileInView="visible"
-          variants={sectionVariants}
-          transition={{ duration: 0.5 }}
-        >
-          <Contact />
-        </motion.div>
-      </section>
-    </ParallaxProvider>
+export default function Index() {
+  return (
+    <ThemeProvider>
+      <ParallaxProvider>
+        <Navbar />
+        {/* Sections */}
+        <SectionWithParallax id="home" title="Welcome to My Portfolio" component={Home} />
+        <SectionWithParallax id="about" title="About Me" component={AboutMe} />
+        <SectionWithParallax id="projects" title="Projects" component={Projects} />
+        <SectionWithParallax id="contact" title="Contact Me" component={Contact} />
+      </ParallaxProvider>
+    </ThemeProvider>
   );
 }

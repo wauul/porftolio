@@ -170,23 +170,40 @@ const AboutMe = () => {
 
       <div className="mb-8 w-full">
         <h3 className="text-2xl font-bold mb-4">My Journey</h3>
-        <Slider {...sliderSettings}> {/* Use the Slider component */}
+
+        {/* Slider - Visible on small screens */}
+        <div className="block md:hidden">
+          <Slider {...sliderSettings}>
+            {timelineEvents.map((event, index) => (
+              <div key={index} className="p-4">
+                <div className="border rounded-lg p-4 flex flex-col items-center justify-center h-full">
+                  <div className="flex-shrink-0">{event.icon}</div>
+                  <div className="text-center mt-2">
+                    <div className="text-xl font-semibold">{event.title}</div>
+                    <div>{event.year}</div>
+                    <p>{event.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Slider>
+        </div>
+
+        {/* Original Layout - Visible on larger screens */}
+        <div className="hidden md:flex items-center justify-between">
           {timelineEvents.map((event, index) => (
-            <div key={index} className="p-4">
-              <div className="border rounded-lg p-4 flex flex-col items-center justify-center h-full" style={{ margin: '0 10px' }}>
-                <div className="flex-shrink-0">
-                  {event.icon}
-                </div>
-                <div className="text-center mt-2">
-                  <div className="text-xl font-semibold">{event.title}</div>
-                  <div>{event.year}</div>
-                  <p>{event.description}</p>
-                </div>
+            <div key={index} className="border rounded-lg p-4 flex flex-col items-center" style={{ flexGrow: 1, margin: '0 10px', maxWidth: `calc(100% / ${timelineEvents.length} - 20px)` }}>
+              <div className="flex-shrink-0">{event.icon}</div>
+              <div className="text-center mt-2">
+                <div className="text-xl font-semibold">{event.title}</div>
+                <div>{event.year}</div>
+                <p>{event.description}</p>
               </div>
             </div>
           ))}
-        </Slider>
+        </div>
       </div>
+
 
       <div className="mb-8">
         <h3 className="text-2xl font-bold mb-4">Skills</h3>

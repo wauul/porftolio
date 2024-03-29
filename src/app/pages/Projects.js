@@ -1,147 +1,127 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Slider from 'react-slick';
 import { motion } from 'framer-motion';
 import Dropdown from '../components/Dropdown';
-import FilterTag from '../components/Tag'; // Ensure the Tag component is correctly implemented
-import Modal from '../components/Modal'; // Ensure the Modal component is correctly implemented
+import FilterTag from '../components/Tag';
+import Modal from '../components/Modal';
+import { fetchProjects } from '../services/projectsService';
+import { useTheme } from '../ThemeProvider';
 
 const Projects = () => {
+
+  const { theme } = useTheme();
   const [selectedProject, setSelectedProject] = useState(null);
-  const [projects, setProjects] = useState([]); // Projects fetched from GitHub
-  const [filteredProjects, setFilteredProjects] = useState([]); // Projects filtered by user criteria
+  const [expandedProject, setExpandedProject] = useState(null);
+  const [projects, setProjects] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
   const [projectTypeFilter, setProjectTypeFilter] = useState([]);
   const [technologyFilter, setTechnologyFilter] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [isProjectTypeDropdownOpen, setIsProjectTypeDropdownOpen] = useState(false);
+  const [isTechnologyDropdownOpen, setIsTechnologyDropdownOpen] = useState(false);
 
-  // Fetch projects from GitHub
   useEffect(() => {
-    const token = process.env.NEXT_PUBLIC_VERCEL_ENV_GITHUB_TOKEN;
-    const fetchProjects = async () => {
-      try {
-        const response = await fetch('https://api.github.com/search/repositories?q=user:wauul', {
-          headers: {
-            'Authorization': 'Bearer ' + token,
-          }
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const repos = await response.json();
-        console.log(repos.items);
-        const projectsData = repos.items.map(repo => ({
-          name: repo.name,
-          shortDescription: repo.description || "No description",
-          description: repo.description || "No detailed description available",
-          githubLink: repo.html_url,
-          screenshot: "/path-to-default-screenshot.jpg",
-          techno: repo.language
-        }));
-        setProjects(projectsData);
-        setFilteredProjects(projectsData); // Initially, all projects are shown
-      } catch (error) {
-        console.error('Failed to fetch projects:', error);
-      }
-    };
-
-    fetchProjects();
-  }, []);
-
-  // Detect screen size for responsive layout
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 600);
-    };
-
+    const handleResize = () => setIsMobile(window.innerWidth <= 600);
     window.addEventListener('resize', handleResize);
-    handleResize(); // Initial check
-
+    handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Filter projects based on selected filters
   useEffect(() => {
-    const filtered = projects.filter((project) =>
+    fetchProjects(setProjects, setFilteredProjects);
+  }, []);
+
+  useEffect(() => {
+    const filtered = projects.filter(project =>
       (projectTypeFilter.length === 0 || projectTypeFilter.includes(project.type)) &&
-      (technologyFilter.length === 0 || technologyFilter.includes(project.techno)) // Modified to use `techno`
+      (technologyFilter.length === 0 || project.technologiesUsed.some(tech => technologyFilter.includes(tech)))
     );
     setFilteredProjects(filtered);
   }, [projectTypeFilter, technologyFilter, projects]);
+
+  const handleTypeFilterChange = type => {
+    const newFilter = projectTypeFilter.includes(type)
+      ? projectTypeFilter.filter(t => t !== type)
+      : [...projectTypeFilter, type];
+    setProjectTypeFilter(newFilter);
+  };
+
+  const handleTechnologyFilterChange = tech => {
+    const newFilter = technologyFilter.includes(tech)
+      ? technologyFilter.filter(t => t !== tech)
+      : [...technologyFilter, tech];
+    setTechnologyFilter(newFilter);
+  };
 
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
+    slidesToShow: 1, 
     slidesToScroll: 1,
-  };
-
-  const handleTypeFilterChange = (type) => {
-    const newFilter = projectTypeFilter.includes(type)
-      ? projectTypeFilter.filter((t) => t !== type)
-      : [...projectTypeFilter, type];
-    setProjectTypeFilter(newFilter);
-
-  };
-
-  const handleTechnologyFilterChange = (tech) => {
-    const newFilter = technologyFilter.includes(tech)
-      ? technologyFilter.filter((t) => t !== tech)
-      : [...technologyFilter, tech];
-    setTechnologyFilter(newFilter);
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    adaptiveHeight: true,
   };
 
   return (
     <>
-      <div className="flex flex-wrap justify-center gap-2 mb-4">
-        {projectTypeFilter.map((type) => (
-          <FilterTag
-            key={type}
-            label={type}
-            onRemove={() => handleTypeFilterChange(type)}
-          />
+      <div className="flex flex-wrap justify-center gap-2 mb-4" style={{ minHeight: '32px' }}>
+        {projectTypeFilter.map(type => (
+          <FilterTag key={type} label={type} onRemove={() => handleTypeFilterChange(type)} />
         ))}
-
-        {technologyFilter.map((tech) => (
-          <FilterTag
-            key={tech}
-            label={tech}
-            onRemove={() => handleTechnologyFilterChange(tech)}
-          />
+        {technologyFilter.map(tech => (
+          <FilterTag key={tech} label={tech} onRemove={() => handleTechnologyFilterChange(tech)} />
         ))}
       </div>
 
-      {/* Filter Dropdowns */}
+      
       <div className="flex justify-center gap-4 mb-6">
         <Dropdown
           title="Project Type"
-          options={['Front End', 'Back End', 'Mobile', 'Desktop', 'Fullstack', 'AI']}
+          options={['Backend', 'Frontend', 'Desktop Application', 'Full Stack', 'AI/ML', 'Big Data', 'Web App']}
           selectedOptions={projectTypeFilter}
           onChange={handleTypeFilterChange}
+          isOpen={isProjectTypeDropdownOpen}
+          onOutsideClick={() => setIsProjectTypeDropdownOpen(false)}
         />
         <Dropdown
           title="Technology"
-          options={['React', 'Kotlin', 'Vue', 'Symfony', 'Python', 'Java', 'React Native', 'Flutter', 'Flask', 'NodeJS', 'TensorFlow', 'Keras', 'Scikit Learn']}
+          options={['Symfony', 'Docker', 'MySQL', 'PHP', 'Kotlin Compose', 'Java', 'Kotlin', 'Spring Boot', 'MongoDB', 'Express.js', 'React', 'Node.js', 'TensorFlow', 'Keras', 'Python', 'Rust', 'Kafka', 'Flask', 'MariaDB', 'React Native', 'VueJS', 'Elixir', 'NextJS', 'Spacy']}
           selectedOptions={technologyFilter}
           onChange={handleTechnologyFilterChange}
+          isOpen={isTechnologyDropdownOpen}
+          onOutsideClick={() => setIsTechnologyDropdownOpen(false)}
         />
       </div>
 
-      {/* Projects Display */}
       {isMobile ? (
-        <Slider {...settings}>
+        <Slider key={theme} {...settings}>
           {filteredProjects.map((project, index) => (
-            <ProjectCard key={index} project={project} onClick={() => setSelectedProject(project)} />
+            <ProjectCard
+              key={index}
+              project={project}
+              onClick={() => setSelectedProject(project)}
+              isExpanded={expandedProject === project}
+              onExpand={() => setExpandedProject(expandedProject === project ? null : project)}
+              theme={theme}
+            />
           ))}
         </Slider>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredProjects.map((project, index) => (
-            <ProjectCard key={index} project={project} onClick={() => setSelectedProject(project)} />
+            <ProjectCard
+              key={index}
+              project={project}
+              onClick={() => setSelectedProject(project)}
+              isExpanded={expandedProject === project}
+              onExpand={() => setExpandedProject(expandedProject === project ? null : project)}
+            />
           ))}
         </div>
       )}
 
-      {/* Project Modal */}
       {selectedProject && (
         <Modal isOpen={!!selectedProject} onClose={() => setSelectedProject(null)}>
           <ProjectModalContent project={selectedProject} />
@@ -151,7 +131,7 @@ const Projects = () => {
   );
 };
 
-const ProjectCard = ({ project, onClick }) => (
+const ProjectCard = ({ project, onClick, isExpanded, onExpand , theme}) => (
   <motion.div
     className="p-4 rounded-lg shadow-lg overflow-hidden cursor-pointer"
     initial={{ opacity: 0, y: 20 }}
@@ -159,16 +139,31 @@ const ProjectCard = ({ project, onClick }) => (
     transition={{ delay: 0.1 }}
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
-    onClick={onClick}
+    onClick={onExpand}
   >
     <img src={project.screenshot} alt={project.name} className="object-cover h-32 w-full" />
     <div className="p-4">
       <h3 className="text-xl font-bold mb-2">{project.name}</h3>
-      <p className="mb-4">{project.shortDescription}</p>
+      <p className="mb-4">{isExpanded ? project.longDescription : project.shortDescription}</p>
+      {isExpanded && (
+        <>
+          <div className="flex flex-row flex-wrap mb-2">
+            {project.technologiesUsed.map((tech, index) => (
+              <div key={index} className={`m-1 p-2 ${theme === 'dark' ?  'bg-gray-800 text-white' :'bg-gray-200  text-gray-700' } rounded`}>
+                {tech}
+              </div>
+            ))}
+          </div>
+          <div className={`p-2 ${theme === 'dark' ?  'bg-gray-800 text-white' :'bg-gray-200  text-gray-700' } rounded mb-2`}>
+            Type: {project.type}
+          </div>
+        </>
+      )}
       <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">GitHub</a>
     </div>
   </motion.div>
 );
+
 
 const ProjectModalContent = ({ project }) => (
   <motion.div
@@ -176,12 +171,42 @@ const ProjectModalContent = ({ project }) => (
     animate={{ scale: 1, opacity: 1 }}
     transition={{ duration: 0.3 }}
   >
-    <img src={project.screenshot} alt={project.name} className="rounded-lg mb-4 w-full h-auto" />
+    <img src={project.screenshots[1]} alt={project.name} className="rounded-lg mb-4 w-full h-auto" />
     <h2 className="text-2xl font-bold mb-2">{project.name}</h2>
-    <p className="mb-4">{project.description}</p>
-    {/* Additional project details */}
+    <p className="mb-4">{project.longDescription}</p>
+    {/* Additional project details can be added here */}
   </motion.div>
 );
+const ArrowStyle = {
+  fontSize: '24px',
+  zIndex: 25,
+  color: `rgb(var(--arrow-color))`, 
+};
+
+const NextArrow = (props) => {
+  const { className, style, onClick } = props;
+
+  return (
+    <div
+      className={className}
+      style={{ ...style, ...ArrowStyle }}
+      onClick={onClick}
+    />
+  );
+};
+
+const PrevArrow = (props) => {
+  const { className, style, onClick } = props;
+
+  return (
+    <div
+      className={className}
+      style={{ ...style, ...ArrowStyle }}
+      onClick={onClick}
+    />
+  );
+};
+
 
 
 export default Projects;
